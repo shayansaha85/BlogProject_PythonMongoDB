@@ -1,52 +1,58 @@
 from flask import *
 import json
-import insertJSON
+import crudLib
 
 app = Flask(__name__)
 
+# payload : { 'heading' : 'test heading', 'blog' : 'test blog', 'comment' : [ 'comment1', 'comment2',... ]}
 @app.route('/createBlog', methods = ['POST'])
 def createBlog():
     apiOutput = {}
     input_json = request.get_json(force=True)
     data = input_json
-    insertJSON.insertBlog(data)
+    crudLib.insertBlog(data)
     return { "message" : "BLOG CREATED" }
 
+# payload : no payload. only need to pass id of the blog
 @app.route('/retrieveBlog', methods = ['GET'])
 def retrieveBlog():
     id = request.args.get('id')
-    return { "id" : id, "message" : "BLOG BODY" }
+    return crudLib.retrieveBlog(int(id))
 
-@app.route("/updateBlog", methods = ["POST"])
+# payload : { 'id' : 'testID', 'updated_blog' : 'test blog', 'comment' : [ 'comment1', 'comment2',... ]}
+@app.route("/updateBlog", methods = ["PUT"])
 def updateBlog():
     input_json = request.get_json(force=True)
     id = input_json['id']
-    heading = input_json['heading']
     blog = input_json['blog']
+    crudLib.updateBlog(int(id), str(blog))
+    return crudLib.retrieveBlog(int(id))
 
-    return { "message" : "BLOG_UPDATED", "info" :  [ { "id" : id, "heading" : heading, "blog" : blog } ]}
-
-@app.route("/deleteBlog", methods = ['GET'])
+# payload : no payload. only need to pass id of the blog
+@app.route("/deleteBlog", methods = ['DELETE'])
 def deleteBlog():
     id = request.args.get('id')
-    return { "message" : str(id) + " BLOG DELETED" }
+    crudLib.deleteBlog(int(id))
+    return { "message" : str(id) + " No. BLOG DELETED" }
 
+# payload : no payload. only need to pass id of the blog
 @app.route("/listBlogs", methods = ['GET'])
 def listBlogs():
-    return { "BLOGS" : [ {"id" : "TID1", "heading" : "THEADING1", "blog" : "TBLOG1"}, {"id" : "TID2", "heading" : "THEADING2", "blog" : "TBLOG2"}, {"id" : "TID3", "heading" : "THEADING3", "blog" : "TBLOG3"}  ] }
+    return crudLib.listBlog()
 
+# payload : { 'id' : 'test id', 'comment' : 'test comment' }
 @app.route("/addComment", methods = ['POST'])
 def addComment():
     input_json = request.get_json(force=True)
     id = input_json['id']
     comment = input_json['comment']
-
+    crudLib.updateComment(int(id), str(comment))
     return { 'message' : "COMMENT ADDED" }
 
+# payload : no payload. only need to pass id of the blog
 @app.route("/listComments", methods = ['GET'])
 def listComments():
     id = request.args.get('id')
+    return crudLib.listComments(int(id))
 
-    return {"COMMENTS" : ["comment1","comment2","comment3","comment4"]}
-
-app.run()
+app.run(debug=True)
