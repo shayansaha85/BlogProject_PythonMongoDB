@@ -6,7 +6,6 @@ For this project MongoDB is used in order to handle complex JSON structure
 <br><br>
 
 ## How to use APIs?
----
 This utility is able to perform the following tasks:
 <br><br>
 **/createBlog** : Creates blog post
