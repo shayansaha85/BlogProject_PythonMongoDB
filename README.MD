@@ -103,6 +103,10 @@ Example : http://localhost:5000/listComments?id=56
     - pymongo
     - jproperties
 - Install MongoDB server from [MongoDB Portal](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/)
+- Clone this repository
+```
+git clone https://github.com/shayansaha85/BlogProject_PythonMongoDB.git
+```
 - To start this tool, open command prompt/terminal/powershell in the directory and run below command to run the utility and use the API with any API client (e.g. Postman, ThunderClient)
 ```
 python app.py
